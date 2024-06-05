@@ -1,0 +1,28 @@
+Pattern Matching ist ein leistungsstarkes Konzept in funktionalen Programmiersprachen, das verwendet wird, um Datenstrukturen zu dekonstruieren und auf ihre Bestandteile zu prüfen. Es ermöglicht eine elegante und deklarative Art, Daten zu manipulieren und auf sie zu reagieren.
+
+### Wie funktioniert Pattern Matching?
+
+Pattern Matching besteht aus dem Vergleich eines Wertes mit einer Menge von Mustern. Wenn der Wert mit einem der Muster übereinstimmt, wird der zugehörige Codeblock ausgeführt.    
+### Beispiel:
+
+```javascript
+object PatternMatchingExample {
+  def main(args: Array[String]): Unit = {
+    println(describe(5))
+    println(describe("hello"))
+    println(describe(List(1, 2, 3)))
+    println(describe((1, "apple")))
+  }
+
+  def describe(x: Any): String = x match {
+    case 5 => "Es ist die Zahl fünf."
+    case "hello" => "Es ist ein Begrüßungswort."
+    case List(_, _, _) => "Es ist eine Liste mit drei Elementen."
+    case (1, something) => s"Es ist ein Tupel, das mit 1 beginnt und $something enthält."
+    case _ => "Es ist etwas anderes."
+  }
+}
+
+```
+
+Unten ist ein Beispiel in Prolog.

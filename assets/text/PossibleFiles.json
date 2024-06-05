@@ -1,0 +1,23 @@
+{
+    "wet": "WET",
+    "perf": "Performance",
+    "cr": "Currying",
+    "ps": "PersistenteDatenstrukturen",
+    "conc": "Concurrency",
+    "hof": "HigherOrderFunctions",
+    "le": "LazyEvaluation",
+    "rk": "Rekursion",
+    "wa": "WhatsApp",
+    "aps": "ApacheSpark",
+    "apk": "ApacheKafka",
+    "plfr": "Playframework",
+    "ggl": "Google",
+    "ds": "VerteiltesRechnen",
+    "di": "Datenintensiv",
+    "mp": "MessagePassing",
+    "pf": "PureFunctions",
+    "imm": "Immutability",
+    "pm": "PatternMatching",
+    "fk": "Funktionskomposition",
+    "lic": "LiChess"
+}
