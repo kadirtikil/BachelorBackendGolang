@@ -1,0 +1,5 @@
+Datenstrukturen, die nach ihrer Initialisierung nicht mehr veraenderbar sind, nennt man persistent.
+
+Das bedeutet, dass kein Prozess die Daten manipulieren darf oder kann.
+
+Dieses Konzept - wie in der Unveraenderlichkeit (Immutability) erklaert - ist massgebend fuer Nebenlaeufigkeit, paralleles Rechnen sowie die Vorhersagbarkeit und Nachvollziehbarkeit des Codes. (Siehe Pure Functions)

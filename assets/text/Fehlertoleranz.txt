@@ -1,0 +1,5 @@
+# Fehlertoleranz
+
+- Monaden: händeln den Eintritt eines Fehlers und verhindern die folgenden Ketten.
+- Verteiltes Rechnen: Kann fehlerhaften Prozess isolieren, Knoten kann Prozess als VM ausführen und von anderen isolieren. Anderer Knoten kann für den Ausfall eines anderen Knotens oder den Ausfall eines anderen Prozesses auf einem anderen Knoten aufkommen und Ausfallsicherheit aufrecht erhalten.
+- 

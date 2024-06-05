@@ -1,0 +1,71 @@
+**Pure Functions** sind Funktionen, ohne Seiteneffekte. D.h., dass bei einem immer gleichen Input, ein immer gleicher Output folgt. 
+
+Um dies zu gewährleisten, muss sichergestellt werden, dass eine Funktion nach ihrer Deklaration - *immutable* - d.h. *unveränderbar* ist.
+
+Dazu eine paar **Beispiele**.
+
+
+## Impure Functions
+
+```javascript
+		public class AddToNum {
+			private int num;
+
+		public void add(int add) {
+			this.num += add;
+		}
+
+		public int getNum() {
+			return this.num;
+		}
+
+		public static void main(String args[]){
+		// Ab hier sollte sich der interne Wert von atm nicht mehr ändern dürfen
+			AddToNum atm = new AddToNum(3); 
+			// Nach Anwendung von getNum(), antwortet diese mit "3".
+			System.out.println(atm.getNum());
+		
+			// Aber nun geschieht es. Der interne Zustand eines bereits deklariertem 
+			// Werts wird modifiziert
+			atm.add(2);
+		
+			// Nach Anwendung von getNum(), antwortet diese mit "5".
+			// Das ist no bueno, da sich der interne Zustand von "3" auf "5" geändert hat.
+			// Somit würde getNum() nun einen anderen Wert zurückgeben.
+			System.out.println(atm.getNum()); 
+		}
+	} 
+```
+
+## Pure Functions
+
+```javascript
+	public class AddToNum {
+		private int num;
+
+		public int add(int add) {
+			return this.num + add;
+		}
+
+		public int getNum() {
+			return this.num;
+		}
+
+		public static void main(String args[]){
+			// Ab hier sollte sich der interne Wert von atm nicht mehr ändern dürfen
+			AddToNum atm = new AddToNum(3); 
+			// Nach Anwendung von getNum(), antwortet diese mit "3".
+			System.out.println(atm.getNum());
+		
+			// Aber nun geschieht es. Der interne Zustand eines bereits deklarierten Werts wird 
+			// modifiziert
+			atm.add(2);
+			// Nach Anwendung von getNum(), antwortet diese wieder mit "3". Das ist sehr bueno.
+			// Diesesmal hat add() nämlich den internen Zustand von atm nicht verändert.
+			// Der interne Zustand von atm ist nun nach Ihrer deklaration nicht mehr veränderbar.
+			System.out.println(atm.getNum()); 
+		}
+	} 
+```
+
+

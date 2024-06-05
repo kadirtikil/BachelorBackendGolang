@@ -1,0 +1,13 @@
+Funktionskomposition ist das aneinanderketten von Funktionen in einer spezifischen Reihenfolge, sodass ein Datum von ihrer urspruenglichen Form in eine neue Form transformiert wird.
+
+Dies ist einfach zu veranschaulichen mit einer Pipeline.
+Siehe unten bei *Pipeline*.
+
+Beispiel:
+Gegeben sind die Funktionen f, g und h. 
+Die Funktionen sind nicht assoziativ zueinander und muessen alphabetisch auf das Datum **x** ausgefuehrt werden.
+Das haette diese Reihenfolge zur folge:
+```javascript
+	h( g( f( x ) ) )
+```
+

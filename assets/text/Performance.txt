@@ -1,0 +1,3 @@
+# Performance
+
+NEed to go deep for performance. might be even deleted later on because evaluatiing functional performance itself is outside of the scope of my work

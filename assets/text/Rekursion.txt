@@ -1,0 +1,42 @@
+## Was ist Rekursion?
+
+Rekursion ist das sich selbst aufrufen einer Funktion, bis eine Bedingung eintrifft. 
+So kann man ohne weitere variablen eine ganze Struktur iterieren. 
+Dadurch sind dann Errors - wie OutOfBoundExceptions - nicht mehr moeglich, da keine natuerliche Zahl genutzt wird
+als indikator fuer Grenzwerte einer Struktur.
+
+Stattdessen fragt sich die Funktion selbst, bei jedem Aufruf, ob dieser Index aktuell existiert. 
+
+Existiert dieser nicht, so wird der Wert zurueckgegeben.
+
+### Beispiel in Scala
+```javascript
+	def sum(array: Array[int]): Int = {
+		if(array.isEmpty) 0
+		else arr.head + sum(arr.tail)
+	}
+```
+
+Des Weiteren gibt es noch die *Tail Recursion*.
+
+### Was ist Tail Recursion?
+
+Tail Recursion ist eine Rekursive Funktion, dessen letzer Aufruf der rekursive - also der eigene - Aufruf ist.
+Dadurch ist es einfach fuer den Compiler die Rekursion zu optimieren, weil dieser den letzten Stackframe hierzu
+nutzen kann.
+
+Des Weiteren kann durch Tail Recuriosn eine Stackoverflow vermieden werden. Da der Rekursive-Aufruf der letzte ist
+arbeitet das Programm in einem konstanten Speicherbereich.
+
+```javascript
+	def sumTR(array: Array[int]): Int = {
+		def sumTRHelper(array: Array[int], index: int, acc: Int ){
+			if(index > array.length) acc
+			else sumTRHelper(array, index + 1, acc + array(index))
+		}
+		sumTRHelper(array, 0, 0)
+	}
+```
+
+Dadurch ist Tail Recursion erstens effizienter, und zweitens Sicherer als regulaere Rekursion.
+

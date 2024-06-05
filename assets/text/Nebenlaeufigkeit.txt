@@ -1,0 +1,25 @@
+Nebenläufige Programmierung ermöglicht es, mehrere Prozesse Parallel auf demselben Datensatz arbeiten zu lassen.
+Vorteile des Nebenläufigen-Programmierens sind bessere Leistung, Skallierbarkeit und Fehlertoleranz.
+
+Im Kontext meiner Arbeit stellt sich hier jedoch nicht die Frage wie es funktioniert, sondern wo die
+Funktionale-Programmierung im Kontext der Nebenläufigkeit eine Rolle spielt.
+        
+**Funktionaler Aspekt**
+- Immutability: Die Prozesse dürfen nichts an den Daten ändern, da andere Prozesse auch mit diesen Daten arbeiten, und diese nicht manipuliert sein sollten.
+
+- Pure Functions: Die Prozesse müssen immer dasselbe Ergebnis liefern ((Dazu am besten eine Darstellung mit Mengen))
+
+- Deklarative Programmierung: Funktionen sind in ihrer Deklaration nachvollziehbar.
+        
+Um nun die **Nebenläufigkeit** interaktiv zu veranschaulichen, ist im folgenden eine Anwendung, die *Tasks* entgegen nimmt
+und diese dann - abhängig von dessen Dauer - nach dem Shortest-Job-First Prinzip organisiert.
+
+Für mehr Informationen zum Algorithmus, siehe Lastenheft auf GitHub.    
+
+
+## Geringe Latenz
+Geringe Latenz steht für die Fähigkeit eines Systems, Anfragen in möglichst kurzer Zeit zu beantworten.
+durch die Nebenläufigkeit können Systeme mehrere Anfragen gleichzeitig abarbeiten und somit schneller Antworten liefern.
+
+Echtzeit Chatsysteme bestehen aus nebenläufigen Prozessen, um Nachrichten zu verarbeiten und an verschiedene Nutzer zu verschicken.
+

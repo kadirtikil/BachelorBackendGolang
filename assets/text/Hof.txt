@@ -1,0 +1,92 @@
+**Higher Order Functions** sind Funktionen, die entweder eine oder mehrere Funktion/en als Argument entgegen nehmen und/oder eine Funktion zurückgeben.
+
+Nicht weit weg von **HOF** befinden sich die **First Class Functions**. 
+In **First Class Functions** ist es möglich:
+1.  Funktionen an Variablen zuzuweisen.
+2.  Funktionen als Argumente an andere Funktionen weiterzugeben.
+3.  Funktionen als Rückgabewert von Funktionen zu erhalten.
+
+### Beispiel für eine First Class Function
+```javascript
+	// Die Zuweisung einer Funktion an eine Variable:
+	// Funktion wird bei Aufruf der Variable ausgeführt.
+	const foo = () => { console.log("Hello World!"); }
+
+	// Die Übergabe einer Funktion, an eine weiter Funktion, als Argument.
+	function printHello() {
+		return "Hello ";
+	}
+
+	function printWorld(messageFunc, name) {
+		console.log(messageFunc() + name + "!");
+	}
+
+	=> printWorld(printHello, "World"); // Prints "Hello World!"
+
+	
+	// Funktionen als Rückgabewert. Siehe Higher Order Functions.
+
+```
+
+### Beispiel für eine Higher Order Function
+```javascript
+	// Higher-order function mit entsprechendem Rückgabewert basierend auf dem Operator  
+	function  operationFactory(operator) { 
+	// Rückgabe einer Funktion die 2 Werte nimmt und die Operation des operanden ausführt.  
+		switch (operator) { 
+			case  '+': 
+				return  function  add(a, b) { 
+					return a + b; 
+				}; 
+			case  '-':
+				return  function  subtract(a, b) { 
+					return a - b; 
+				}; 
+			case  '*': 
+				return  function  multiply(a, b) { 
+					return a * b; 
+				}; 
+			case  '/': 
+				return  function  divide(a, b) { 
+					return a / b; 
+				}; 
+			default: 
+			throw  new  Error('Invalid operator: ' + operator); 
+			} 
+	} 
+  
+	// Operanden werden mit der operationFactory erstellt.
+	const add = operationFactory('+'); 
+	const subtract = operationFactory('-'); 
+	const multiply = operationFactory('*'); 
+	const divide = operationFactory('/'); 
+
+	// Ergebnis  
+	console.log(add(5, 3)); // Output: 8  
+	console.log(subtract(10, 4)); // Output: 6  
+	console.log(multiply(2, 6)); // Output: 12  
+	console.log(divide(20, 5)); // Output: 4
+```
+
+## Was ist der Vorteil von HOF?
+
+1. Abstraktion: 
+HOF erlauben es, Rechenmuster zu abstrahieren um diese folglich verständlicher zu machen. 
+Das beste Beispiel hierfür wäre map() (Siehe Datenintensiv).
+
+2. Wiederverwendbar:
+Durch die Nutzung von HOF, kann man allgemeinen und wiederverwendbaren Code schreiben. 
+Die .filter()-Funktion kann man mit beliebigen Prädikatsfunktionen verwenden. 
+
+3. Aufbau:
+HOF sind durch die Kombination von mehreren simpleren/puren Funktionen einfacher nachzuvollziehen. 
+Des Weiteren erleichtert dies auch die Wartung der Codebasis bis zum Testen des Codes.
+
+4. Immutability und Pure Functions: 
+HOF sicherer durch die Nutzung von Immutability und Pure Functions. Dadurch ist das Verhalten des Programms
+vorhersagbarer. Außerdem ist dadurch das Debugging einfacher.
+
+5. Deklarativer Stil:
+Durch den deklarativen Stil in HOF ist der Code aussagekräftiger darin, was es machen sollen.
+Anstatt eine Reihe von Befehlen zu beinhalten, kann durch die Verwendung von richtig benannten und 
+simplen/puren Funktionen, die Funktionalität des Programms um einiges einfach nachvollzogen werden.

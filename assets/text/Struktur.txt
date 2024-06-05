@@ -1,0 +1,46 @@
+# Struktur
+
+Die Struktur in der Funktionalen-Programmierung ist besser als in der Imperativen.
+
+Check dis out!
+
+## Imperativer Ansatz:
+
+```
+
+let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+let evenNumbers = [];
+
+for (let i = 0; i < numbers.length; i++) {
+    if (numbers[i] % 2 === 0) {
+        evenNumbers.push(numbers[i]);
+    }
+}
+
+let squaredEvenNumbers = [];
+for (let i = 0; i < evenNumbers.length; i++) {
+    squaredEvenNumbers.push(evenNumbers[i] * evenNumbers[i]);
+}
+
+let sum = 0;
+for (let i = 0; i < squaredEvenNumbers.length; i++) {
+    sum += squaredEvenNumbers[i];
+}
+
+console.log(sum); // Output: 220
+
+``` 
+
+
+## Funktionaler Ansatz:
+```
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+const sumOfSquaredEvens = numbers
+    .filter(number => number % 2 === 0)
+    .map(number => number * number)
+    .reduce((acc, number) => acc + number, 0);
+
+console.log(sumOfSquaredEvens); // Output: 220
+
+```

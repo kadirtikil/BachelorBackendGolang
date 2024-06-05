@@ -9,9 +9,9 @@ import (
 	"strings"
 )
 
+/******************************************************************************************************************************************************/
 //////////////////////////////////////////////////////////////////////////////////////////
 // HELPER FUNCTIONS
-
 // Gets the markdown txt
 func GetTxtAsString(filepath string) (string, error) {
 	// open the file in question
@@ -37,6 +37,8 @@ func GetTxtAsString(filepath string) (string, error) {
 		return "", err
 	}
 
+	fmt.Println(lines)
+
 	// return the string
 	return strings.Join(lines, "\n"), nil
 }
@@ -47,7 +49,7 @@ var jsonDataWhitelisted map[string]string
 // read the json containing fetchable elements. (whitelisted)
 func getWhitelistedElements() (map[string]string, error) {
 	// open the json here
-	file, err := os.Open("assets\\text\\PossibleFiles.json")
+	file, err := os.Open("assets\\PossibleFiles.json")
 	// check if json might not exist
 	if err != nil {
 		return map[string]string{}, err
@@ -90,7 +92,55 @@ func getKeyValue(key string) (string, bool) {
 	return value, ok
 }
 
-// ////////////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Functions for svgs
+// get the svg from directory
+func GetSvgAsString(filepath string) ([]byte, error) {
+	file, err := os.ReadFile(filepath)
+	if err != nil {
+		return []byte{}, err
+	}
+
+	return file, nil
+}
+
+var svgElements map[string]string
+
+func getWhitelistedSVGElements() (map[string]string, error) {
+	file, err := os.Open("assets\\PossibleSVG.json")
+
+	if err != nil {
+		return map[string]string{}, nil
+	}
+
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	var lines []byte
+
+	for scanner.Scan() {
+		lines = append(lines, scanner.Bytes()...)
+	}
+
+	if err := scanner.Err(); err != nil {
+		return map[string]string{}, err
+	}
+
+	if err := json.Unmarshal(lines, &svgElements); err != nil {
+		return map[string]string{}, err
+	}
+
+	return svgElements, nil
+}
+
+func getKeyValueSvg(file string) (string, bool) {
+	getWhitelistedSVGElements()
+	value, ok := svgElements[file]
+	return value, ok
+}
+
+/******************************************************************************************************************************************************/
+//////////////////////////////////////////////////////////////////////////////////////////
 func HomePageHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Welcome to the Home Page!")
 }
@@ -118,6 +168,28 @@ func GetMarkdown(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, content)
 	} else {
 		http.Error(w, "Could'nt read file!", http.StatusInternalServerError)
+	}
+
+}
+
+func GetSvg(w http.ResponseWriter, r *http.Request) {
+
+	parts := strings.Split(r.URL.Path, "/")
+	filename := parts[len(parts)-1]
+
+	value, ok := getKeyValueSvg(filename)
+
+	fmt.Println(value)
+
+	if ok {
+		svgFile, err := GetSvgAsString("assets\\svgs\\" + value + ".svg")
+		if err != nil {
+			http.Error(w, "what", http.StatusInternalServerError)
+		}
+		w.Header().Set("Content-Type", "image/svg+xml")
+		w.Write(svgFile)
+	} else {
+		http.Error(w, "no bonita im sowwy", http.StatusInternalServerError)
 	}
 
 }

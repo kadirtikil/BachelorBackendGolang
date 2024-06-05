@@ -1,0 +1,24 @@
+Currying ist eine Technik in der funktionalen Programmierung, bei der eine Funktion, die mehrere Argumente benoetigt, in eine Kette von Funktionen umgewandelt wird, von denen jede nur ein einziges Argument benoetigt. Dies ermoeglicht es, Funktionen teilweise zu applizieren, das heisst, sie mit einigen ihrer Argumente vorab zu belegen, um neue Funktionen zu erstellen.
+
+Hier ist ein Beispiel auf JavaScript, um das Konzept des Currying zu veranschaulichen:
+
+```javascript
+// Normale Funktion, die zwei Argumente annimmt
+function add(a, b) {
+  return a + b;
+}
+
+// Curry-Version der add-Funktion
+function curryAdd(a) {
+  return function(b) {
+    return add(a, b);
+  };
+}
+
+// Verwenden der Curry-Funktion
+const add5 = curryAdd(5);
+console.log(add5(3)); // Ausgabe: 8
+console.log(add5(10)); // Ausgabe: 15
+
+```
+Currying ist ein maechtiges Konzept in der funktionalen Programmierung, das es ermoeglicht, Funktionen schrittweise zu applizieren. Dies foerdert die Wiederverwendbarkeit und Flexibilitaet von Code. Das obige Beispiel zeigt, wie man Currying in JavaScript implementieren und verwenden kann.

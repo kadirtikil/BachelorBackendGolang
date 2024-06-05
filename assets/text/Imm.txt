@@ -1,0 +1,36 @@
+**Immutability** bedeutet, dass etwas sich nicht ändert, auch nicht über einen gegebenen Zeitraum hinaus.
+
+In der Funktionalen Programmierung bezieht sich dies auf die **Unveränderbarkeit** eines Datums nach ihrer Initialisierung. Dadurch sind Seiteneffekte nicht möglich. D.h. ein Wert kann sich während der Laufzeit nicht unerwartet ändern.
+
+Dieses Designkonzept der **Unveränderbarkeit** hat in vielen Konzepten einen immensen Nutzen.
+Zum Beispiel in:
+1. Sicherheit
+2. Nebenläufigkeit
+3. Persistente Datenstrukturen
+Dazu aber später mehr.
+
+## Nun stellen sich ein paar Fragen:
+### Warum bevorzugt die Funktionale Programmierung Immutability?
+Weil dadurch der Code viel einfacher nachzuvollziehen ist. 
+```javascript
+	function addItem(cart, item) {
+	  return {
+	    ...cart,
+	    items: [...cart.items, item],
+	    total: cart.total + item.price,
+	  };
+	}
+
+	const cart = { items: [], total: 0 };
+	const cartWithApple = addItem(cart, { name: 'Apple', price: 1 });
+	const cartWithAppleAndBanana = addItem(cartWithApple, { name: 'Banana', price: 2 });
+
+	console.log(cart); // { items: [], total: 0 }
+	console.log(cartWithApple); // { items: [ { name: 'Apple', price: 1 } ], total: 1 }
+	console.log(cartWithAppleAndBanana); // { items: [ { name: 'Apple', price: 1 }, 
+										 //{ name: 'Banana', price: 2 } ], total: 3 }
+
+``` 
+
+## Warum legt die Funktionale Programmierung einen so hohen Fokus auf die Veränderbarkeit von Daten?
+Hauptsächlich wegen besser strukturiertem Code. Jedoch spielt es noch eine Weitere Rolle in der Nebenläufigkeit. (Dazu aber später mehr.)

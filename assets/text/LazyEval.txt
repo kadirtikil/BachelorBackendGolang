@@ -1,0 +1,37 @@
+Lazy Evaluation ist ein Konzept, das in funktionalen Programmiersprachen weit verbreitet ist. Bei der träge Auswertung werden Ausdrücke nicht sofort ausgewertet, sondern erst dann, wenn ihr Wert tatsächlich benötigt wird. Dies ermöglicht eine effiziente Verwendung von Ressourcen und kann die Leistung verbessern, insbesondere wenn es um die Verarbeitung großer oder unendlicher Datenmengen geht.
+
+### Wie funktioniert Lazy Evaluation?
+
+Bei der Lazy Evaluation werden Ausdrücke in Form von sogenannten "Thunks" oder "Versprechungen" (Promises) repräsentiert. Diese enthalten den Code zur Auswertung des Ausdrucks und werden erst dann evaluiert, wenn ihr Wert benötigt wird. Dadurch werden unnötige Berechnungen vermieden und Ressourcen effizient genutzt.
+
+In Scala wird dazu das **lazy** Schlüsselwort verwendet. Diese wird dann **erst** an ihrem Aufruf ausgewertet.
+Danach wird die Auswertung gecacht, also Zwischengespeichert, sodass sie bei ihrem nächsten Aufruf sofort
+abgerufen werden kann.
+
+### Beispiel:
+
+```javascript
+object LazyEvaluationExample {
+  def main(args: Array[String]): Unit = {
+    lazy val expensiveComputation = {
+      println("Eine große Auswertung geschieht gerade...")
+      52
+    }
+
+    println("Vor dem Aufruf der lazy val...")
+    println(s"Das Ergebnis ist: $expensiveComputation") //  52, hier wird dieser berechnet und gecached.
+    println("After accessing the lazy val")
+    println(s"Accessing the lazy val again: $expensiveComputation") // hier wird der gecachede Wert abgerufen.
+  }
+}
+
+```
+
+
+*Lazy Evaluation* ist jedoch nicht zu verwechseln mit async/await oder Promises in JavaScript!
+
+Async/await und Promises in Javascript existieren aus synchronisation Zwecken und nicht undbedingt um 
+Ressourcer effizient zu nutzen. Dies liegt daran, dass nicht jeder Server einem Client auf Anhieb antworten kann.
+
+Zweck in der *Lazy Evaluation* ist es, potentiell/theoretisch über unendlich große Datenstrukturen zu arbeiten.
+

@@ -1,0 +1,48 @@
+Monaden sind ein fortgeschrittenes Konzept in der funktionalen Programmierung, das zur Verwaltung von Nebeneffekten verwendet wird. Sie bieten eine strukturierte Möglichkeit, mit Effekten wie Nichtdeterminismus, Zustand und Fehlerbehandlung umzugehen, während die rein funktionale Natur der Programmierung beibehalten wird.
+
+### Struktur einer Monade:
+
+Eine Monade besteht aus drei Hauptkomponenten:
+
+1. **Unit-Funktion (`return`)**: Nimmt einen normalen Wert und hebt ihn in den Monadenkontext.
+2. **Bind-Funktion (`bind` oder `>>=`)**: Nimmt einen Wert im Monadenkontext und eine Funktion, die einen Wert im Monadenkontext zurückgibt, und wendet diese Funktion auf den Wert an.
+3. **Monadenoperator (`>>`)**: Sequenziert zwei Monadenoperationen, verwirft jedoch das Ergebnis der ersten Operation.
+
+### Beispiel:
+
+```haskell
+-- Beispiel in Haskell
+
+-- Definition einer Maybe-Monade für die Fehlerbehandlung
+data Maybe a = Just a | Nothing
+
+-- Unit-Funktion für Maybe
+unitMaybe :: a -> Maybe a
+unitMaybe x = Just x
+
+-- Bind-Funktion für Maybe
+bindMaybe :: Maybe a -> (a -> Maybe b) -> Maybe b
+bindMaybe Nothing _ = Nothing
+bindMaybe (Just x) f = f x
+
+-- Monadenoperator für Maybe
+thenMaybe :: Maybe a -> Maybe b -> Maybe b
+thenMaybe _ Nothing = Nothing
+thenMaybe x (Just y) = x >> Just y
+
+-- Beispielanwendung
+safe_divide :: Float -> Float -> Maybe Float
+safe_divide _ 0 = Nothing
+safe_divide x y = Just (x / y)
+
+-- Verwendung von Monaden in einer Berechnung
+result :: Maybe Float
+result = unitMaybe 10 >>= \x ->
+         unitMaybe 5 >>= \y ->
+         safe_divide x y
+
+-- Ausgabe des Ergebnisses
+main :: IO ()
+main = case result of
+         Just res -> putStrLn ("Ergebnis: " ++ show res)
+         Nothing -> putStrLn "Fehler: Division durch Null"

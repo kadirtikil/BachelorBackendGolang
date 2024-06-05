@@ -1,0 +1,63 @@
+LiChess ist eine online Schachplattform, welche durch ihre funktionale programmierung in Scala auf viel aufmerksamkeit Seitens von Entwicklern gestoßen ist. 
+
+Im Rahmen dieses Projektes folgt eine Analyse an maßgebenden Stellen des Codes.
+
+###### Im Rahmen des Projekts wird nicht die funktionalität der Funktionen erklärt, sondern nur, dass es funktional programmiert wurde. Für einen tieferen Einblick siehe Bachelorarbeit.
+
+
+## Board.scala
+### Mit Bits Schach repräsentieren
+```javascript
+  def apply(l: Long): Bitboard                            = l
+  inline def apply(inline xs: Iterable[Square]): Bitboard = xs.foldLeft(empty)((b, s) => b | s.bl)
+
+  val empty: Bitboard = 0L
+  val all: Bitboard   = -1L
+  // E4, D4, E5, D5
+  val center = 0x1818000000L
+
+  val firstRank: Bitboard = 0xffL
+  val lastRank: Bitboard  = 0xffL << 56
+
+  // all light squares
+  val lightSquares: Bitboard = 0x55aa55aa55aa55aaL
+  // all dark squares
+  val darkSquares: Bitboard = 0xaa55aa55aa55aa55L
+```
+Siehe unten in der SVG.
+
+Funktionen für das Schachfeld.
+
+```javascript
+
+// Checks if a is equal to empty.
+// Pure function: No side effects, consistent output for the same input.
+def isEmpty: Boolean  = a == empty
+
+// Negates the result of isEmpty.
+// Pure function: No side effects, consistent output for the same input.
+def nonEmpty: Boolean = !isEmpty
+
+// Checks if the bit corresponding to the square is set in a.
+// Pure function: No side effects, consistent output for the same input.
+def contains(square: Square): Boolean =
+  (a & (1L << square.value)) != 0L
+
+// Returns a new Bitboard with the bit corresponding to the square set.
+// Pure function: No side effects, does not modify a, returns a new Bitboard.
+def add(square: Square): Bitboard    = a | square.bl
+
+// Returns a new Bitboard with the bit corresponding to the square cleared.
+// Pure function: No side effects, does not modify a, returns a new Bitboard.
+def remove(square: Square): Bitboard = a & ~square.bl
+
+// Returns a new Bitboard with the bit moved from one square to another.
+// Pure function: No side effects, does not modify a, returns a new Bitboard.
+def move(from: Square, to: Square): Bitboard =
+   a & ~from.bl | to.bl
+
+// Checks if more than one bit is set in a.
+// Pure function: No side effects, consistent output for the same input.
+def moreThanOne: Boolean =
+   (a & (a - 1L)) != 0L
+```

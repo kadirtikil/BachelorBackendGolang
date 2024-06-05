@@ -1,0 +1,87 @@
+Das Backend von WhatsApp ist mit Erlang aufgebaut. Erlang kann durch das Message Passing Fehlertoleranz, Nebenläufigkeit und bessere Performance bieten. Für eine Real-Time-Chat-App daher perfekt.
+
+## Wie funktioniert das Message Passing in Erlang?
+
+### Nebenläufigkeit
+Erlang kann durch seine leichten Prozesse, welche vom Erlang Runtime gesteuert werden, statt vom Betriebssystem.
+
+Dadurch kann Erlang die große Menge an Prozessen besser nebenläufig verwalten.
+
+
+
+#### Prozesse in der Nebenläufigkeit
+
+In Erlang ist jeder Prozess eine eigene Einheit mit ihrem eigenen Speicher, sodass kein geteilter Speicher zwischen Prozessen existiert. 
+Da diese Prozesse leicht sind, kann das System diese in Millionen verwalten.
+
+#### Beispiel:
+```javascript
+% Spawn multiple processes to perform concurrent tasks
+spawn(fun() -> perform_task(1) end),
+spawn(fun() -> perform_task(2) end),
+spawn(fun() -> perform_task(3) end).
+
+perform_task(TaskNumber) ->
+    io:format("Performing task ~p~n", [TaskNumber]),
+    %% Simulate a task by sleeping for a random duration
+    timer:sleep(random:uniform(1000)),
+    io:format("Task ~p completed~n", [TaskNumber]).
+
+```
+
+## Message Passing
+Prozesse in Erlang kommunizieren durch Message Passing. Dieser Ansatz vermeidet geteilten Speicher, was Nebenläufigkeit fördert und race conditions vermeidet.
+
+#### Beispiel:
+```javascript
+% Define a process that receives messages
+Pid = spawn(fun() -> message_loop() end).
+
+% Send a message to the process
+Pid ! {hello, "world"}.
+
+message_loop() ->
+    receive
+        {hello, Msg} -> io:format("Received message: ~s~n", [Msg]),
+                         message_loop()
+    end.
+
+```
+
+In diesem Beispiel wird ein Prozess erstellt, um Nachrichten zu behandeln. Der 'receive' Block wartet auf eine Nachricht und verarbeitet diese, wenn sie ankommt.
+
+## Fehlertoleranz
+Die Philosophie "let it crash" spielt hier eine große Rolle. Es wird erwartet, dass Prozesse fehlerhaft sind und vom Supervisor wieder gestartet werden. Dieser Ansatz verbessert das Error-Handling und macht das System robuster.
+
+#### Beispiel:
+```javascript
+% Worker process that may crash
+-module(worker).
+-export([start/0, loop/0]).
+
+start() ->
+    spawn(fun loop/0).
+
+loop() ->
+    receive
+        {crash, Reason} -> exit(Reason);
+        {message, Msg} -> io:format("Message: ~s~n", [Msg]),
+                          loop()
+    end.
+
+% Supervisor process that restarts the worker
+-module(supervisor).
+-export([start/0, supervise/1]).
+
+start() ->
+    spawn(fun supervise/1, [worker:start()]).
+
+supervise(WorkerPid) ->
+    monitor(process, WorkerPid),
+    receive
+        {'DOWN', _Ref, process, _Pid, _Reason} ->
+            io:format("Worker crashed, restarting...~n"),
+            supervise(worker:start())
+    end.
+
+```

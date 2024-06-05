@@ -1,0 +1,11 @@
+        - Immutable Data/-structures
+        - Pure Functions
+
+        FuPS ist in Ihrer funktionsweise, also der Ausführung eines Prozesses, sicherer als imperative Ansätze.
+        Durch die Immutability der Daten, keine Seiteneffekte und deklarative Art ist es einfach zu verstehen. 
+        Folglich ist auch das Verhalten einfacher nachzuvollziehen. 
+
+        Es liegen jedoch aktuell keine Studien vor, die nachweisen können, wie die Dichte von Fehlern über mehrere
+        Programmiersprachen ist. Nur eine über Haskell. Juckt keinen.
+
+        # Einfach code mit gutem und schlechtem Beispiel angeben. Etwas interaktives müsste hier viel zu detailliert dargestellt werden und ist die mühe nicht wert.

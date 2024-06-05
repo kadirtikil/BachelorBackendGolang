@@ -1,0 +1,31 @@
+        Beim Messagepassing in Erlang ist es wichtig, dass die Prozesse miteinander kommunizieren können, 
+        um synchron zu bleiben. Die Messages werden hierbei durch das Pattern Matching aneinander übertragen.
+        Des weiteren muss der Sender nicht auf eine Antwort vom Empfänger warten.
+        Das Absenden einer Nachricht geschieht wie folgt:
+
+        ```
+            Pid ! {{ '{' }} self(), "Message Contents" {{ '}' }}
+        ```
+        
+        Links steht die Pid des Empfängers. Das self() übernimmt hierbei die Pid des Senders. Zum Schluss wird noch der
+        Nachrichteninhalt übergeben.
+        
+        Das Empfangen einer Nachricht geschieht wie folgt:
+        ```
+            receive
+                {{'{'}} From, Message {{'}'}} -> ...
+                ...
+            end
+        ```
+
+        Hier wird das Pattern-Matching verwendet, um eine Nachricht von 'From' zu finden.
+
+        
+
+        Wenn ein Prozess eine Nachricht erhält, vergleicht dieser die empfangene Nachricht, mit dem definiertem Pattern im Empfangsblock. 
+        Wenn dieser zum definierten Muster passt, wird der entsprechende Codeblock ausgeführt. 
+        Wenn nicht, wartet der Prozess bis eine passende Nachricht eintrifft. 
+
+        Das Pattern Matching ermöglicht es in Erlang, Nachrichten in einer klaren art und weise zu handhaben 
+        wodurch es möglich ist, eine klare Struktur im Code zu haben, welcher einfach nachvollziehbar ist. 
+        Dieser funktionale Ansatz ist Grund für die Zuverlässigkeit und Fehlertoleranz in Erlang. 

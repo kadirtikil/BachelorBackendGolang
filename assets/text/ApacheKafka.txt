@@ -1,0 +1,5 @@
+# Key files are in these directories:
+
+### core/src/main/scala/kafka/server: Server-related logic.
+### core/src/main/scala/kafka/consumer: Consumer-related logic.
+### core/src/main/scala/kafka/producer: Producer-related logic.

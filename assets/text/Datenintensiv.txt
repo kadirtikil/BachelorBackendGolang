@@ -1,0 +1,99 @@
+## The Holy Trinity Of Functional-Programming, Map-Filter-Reduce 
+
+### **Map**
+
+Die map-Funktion wird verwendet, um eine Operation auf jedes Element einer Liste oder einer Datenstruktur 
+anzuwenden und eine neue Liste mit den Ergebnissen dieser Operation zu erstellen. 
+
+Es transformiert jedes Element nach den angegebenen Regeln, ohne die Originaldaten zu ändern. 
+
+
+*Beispiel:*
+
+Betone die wichtige Rolle von map bei der Transformation von Daten und der Erzeugung neuer Datenstrukturen.        
+        
+Wenn man nun einen Array an Werten hat, kann man diese Werte mit Map bearbeiten. Jedoch werden diese nicht geändert, 
+
+sondern die veränderte Form wird in das Ergebnis übernommen. => Immutability.
+
+```javascript
+    const values = ["  Potato ", " Apple   ", " Watermelon   "];
+
+    const result = values.map((x) => x.trim());
+
+    => result = ["Potato", "Apple", "Watermelon"];
+```
+
+Hier werden zunächst alle Elemente im Array auf Blankspaces untersucht, die dann entfernt werden. 
+
+Man merke: Map geht über JEDES Element im Array. Kein Element wird übersprungen.
+
+Wo kommt hier die Funktionale-Programmierung ins Spiel?
+
+1. Pure Function & Immutability
+
+Map verändert die Daten nicht, sondern ließt sie aus, mutiert diese, und speichert sie im Ergebnis.
+Dadurch können keine Seiteneffekte auftreten, weil das Ergebnis ausschließlich vom Input der 
+unveränderlichen Daten abhängt.
+
+2. Higher-Order-Function:
+
+Map akzeptiert nur eine Funktion und gibt eine Funktion zurück. Desweiteren können je nach belieben individuele 
+Funktionen erstellt werden, da Map eine HOF ist, und somit auch Funktionen akzeptiert. Dies trägt auch zur Erweiterbarkeit
+der Funktion bei.
+
+3. Declarative-Programming:
+
+Es gibt keine Imperative-Anweisungen die sagen, was mit einem Element passieren soll. Stattdessen wird ein deklarativer Ansatz
+verwendet, der jedes Element auf die selbe Art bearbeitet.
+
+
+
+
+
+
+### **Filter**
+
+Die filter-Funktion wird verwendet, um Elemente aus einer Liste auszuwählen, die eine bestimmte Bedingung erfüllen, und eine neue Liste mit diesen Elementen zurückzugeben. 
+        
+Sie ermöglicht es, Daten nach bestimmten Kriterien zu filtern, ohne die Daten selbst zu ändern.
+        
+*Beispiel:*
+
+Beschreibe, wie filter verwendet werden kann, 
+        
+um nur die Elemente zu behalten, die bestimmte Eigenschaften haben oder bestimmte Bedingungen erfüllen
+        
+Die ***filter-Funktion*** nimmt eine Funktion, die eine bool'sche Funktion annimmt, sodass diese ein Element auswertet,
+und falls dieser zutrifft, übernimmt. Dadurch kann die Datenmenge auf die Menge der relevanten Daten reduziert werden.
+
+Um dies besser zu veranschaulichen, wird den Daten eine weitere Metrik gegeben.
+        
+```javascript
+    const values = [("Potatoes","vegetarian"),("Steak","carnivore"),("Apple","vegetarian")];
+
+    const vegies = values.filter((x) => x[1]==="vegetarian);
+
+    => vegies = [("Potatoes","vegetarian"), ("Apple","vegetarian")]
+        
+```
+
+
+
+### **Reduce**
+
+Die reduce-Funktion wird verwendet, um eine Liste von Werten auf einen einzigen Wert zu reduzieren, indem eine kumulative Operation auf die Elemente angewendet wird. 
+        
+Sie kann verwendet werden, um Summen zu berechnen, Werte zu aggregieren oder komplexe Operationen auf Listen durchzuführen. 
+        
+So wird am Ende nur ein Wert aus der Datenmenge gefolgert.
+        
+*Beispiel:*
+
+```javascript
+    const values = [1, 2, 3, 4];
+
+    const result = values.reduce((acc, curr) => acc + curr, initialVal);
+
+    => resulte = 10;
+```
