@@ -1,7 +1,7 @@
 {
-    "pf": "Pure Functions",
-    "imm": "Immutability",
-    "pm": "PatternMatching",
-    "fk": "Funktionskomposition",
-    "lic": "chessBitBoard"
+    "purefunction": "Pure Functions",
+    "immutable": "Immutability",
+    "patternmatching": "PatternMatching",
+    "funccomp": "Funktionskomposition",
+    "chessbitboardsvg": "chessBitBoard"
 }

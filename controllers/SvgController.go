@@ -3,7 +3,6 @@ package controllers
 import (
 	"bufio"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"os"
 	"strings"
@@ -65,15 +64,25 @@ func GetSvg(w http.ResponseWriter, r *http.Request) {
 
 	value, ok := getKeyValueSvg(filename)
 
-	fmt.Println(value)
-
 	if ok {
 		svgFile, err := GetSvgAsString("assets\\svgs\\" + value + ".svg")
 		if err != nil {
 			http.Error(w, "what", http.StatusInternalServerError)
 		}
-		w.Header().Set("Content-Type", "image/svg+xml")
-		w.Write(svgFile)
+
+		msg := Message{
+			Message: string(svgFile),
+		}
+
+		jsonSvgPayload, err := json.Marshal(msg)
+
+		if err != nil {
+			http.Error(w, "what", http.StatusInternalServerError)
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Write(jsonSvgPayload)
 	} else {
 		http.Error(w, "no bonita im sowwy", http.StatusInternalServerError)
 	}
