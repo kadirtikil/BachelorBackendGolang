@@ -4,8 +4,8 @@
     "cr": "Currying",
     "ps": "PersistenteDatenstrukturen",
     "conc": "Concurrency",
-    "hof": "HigherOrderFunctions",
-    "le": "LazyEvaluation",
+    "hof": "Hof",
+    "le": "LazyEval",
     "rk": "Rekursion",
     "wa": "WhatsApp",
     "aps": "ApacheSpark",
@@ -19,5 +19,6 @@
     "imm": "Immutability",
     "pm": "PatternMatching",
     "fk": "Funktionskomposition",
-    "lic": "LiChess"
+    "lic": "LiChess",
+    "apm": "ArtenDesPm"
 }

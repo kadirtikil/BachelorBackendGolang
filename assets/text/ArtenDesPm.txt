@@ -1,0 +1,132 @@
+Pattern Matching ist eine Technik in der Informatik und Programmierung, die es ermoeglicht, Strukturen innerhalb von Daten zu erkennen und darauf basierend Operationen durchzufuehren. 
+Diese Technik wird in vielen Programmiersprachen und Paradigmen verwendet, insbesondere in funktionalen und logikbasierten Sprachen. 
+Pattern Matching hat mehrere Unteraspekte, die jeweils unterschiedliche Aspekte der Datenverarbeitung und -analyse abdecken. 
+Hier sind einige der wichtigsten Unteraspekte des Pattern Matching:
+
+## Syntaxbasiertes Pattern Matching
+Dies bezieht sich auf die Art und Weise, wie Muster in der Syntax einer Sprache definiert und erkannt werden.
+
+### Literal Patterns: Erkennen von konkreten Werten.
+```javascript
+case x of
+  1 -> "one"
+  2 -> "two"
+```
+
+### Variable Patterns: Binden von Werten an Variablen.
+```javascript
+case x of
+  y -> y + 1  -- y kann jeder Wert sein
+```
+
+### Wildcard Patterns: Ignorieren von bestimmten Werten.
+```javascript
+case x of
+  _ -> "any value"  -- Das Unterstrichmuster ignoriert den tatsaechlichen Wert von x
+```
+
+## Struktur- und Typbasierte Pattern Matching
+Hierbei werden komplexere Strukturen und Typen wie Listen, Tupel und benutzerdefinierte Datentypen gematcht.
+
+Tupel Patterns: Muster, die auf Tupel-Strukturen angewendet werden.
+
+```javascript
+case x of
+  (a, b) -> a + b  -- Muster fuer ein Tupel mit zwei Elementen
+```
+Listen Patterns: Erkennung von Listenstrukturen.
+
+```javascript
+case x of
+  [] -> "empty list"
+  (y:ys) -> "head is " ++ show y  -- Muster fuer eine Liste mit Kopf und Schwanz
+```
+
+
+Benutzerdefinierte Datentypen: Muster fuer benutzerdefinierte Typen oder Algebraische Datentypen.
+
+
+```javascript
+data Maybe a = Nothing | Just a
+case x of
+  Nothing -> "nothing"
+  Just value -> "just " ++ show value
+```
+
+## Rekursives Pattern Matching
+Die Faehigkeit, rekursive Datenstrukturen wie Baeume oder Listen zu durchsuchen.
+
+Rekursive Listen: Erkennen und Verarbeiten rekursiver Strukturen.
+
+```javascript
+sumList :: [Int] -> Int
+sumList [] = 0
+sumList (x:xs) = x + sumList xs
+```
+
+Rekursive Baeume: Verarbeiten von Baumstrukturen durch Rekursion.
+
+```javascript
+Code kopieren
+data Tree a = Leaf a | Node (Tree a) (Tree a)
+depth :: Tree a -> Int
+depth (Leaf _) = 1
+depth (Node left right) = 1 + max (depth left) (depth right)
+```
+
+## Guarded Patterns
+Erlauben zusaetzliche Bedingungen (Guards) in Pattern Matching, die ueber die reine Struktur hinausgehen.
+
+Guards: Zusaetzliche logische Bedingungen innerhalb eines Musters.
+```javascript
+Code kopieren
+case x of
+  y | y > 0 -> "positive"
+    | y == 0 -> "zero"
+    | otherwise -> "negative"
+```
+
+## Pattern Matching mit Backtracking
+Ein komplexerer Ansatz, bei dem das System verschiedene Muster ausprobiert und zurueckkehrt, wenn ein Muster nicht passt. Dies ist typisch fuer logikbasierte Sprachen wie Prolog.
+
+Backtracking in Prolog:
+```javascript
+member(X, [X|_]).
+member(X, [_|Tail]) :- member(X, Tail).
+```
+
+## Pattern Matching und Destrukturierung
+Ermoeglicht die direkte Extraktion von Komponenten aus Datenstrukturen.
+
+Destrukturierung in JavaScript:
+
+```javascript
+const [a, b] = [1, 2];  // a wird 1 und b wird 2
+```
+Destrukturierung in Python:
+
+```javascript
+Code kopieren
+a, b = (1, 2)  # a wird 1 und b wird 2
+```
+
+## Lazy Pattern Matching
+Ein Ansatz in Sprachen mit lazy evaluation, bei dem Muster nur bei Bedarf ausgewertet werden.
+
+Lazy Patterns in Haskell:
+```javascript
+f ~(x, y) = 1  -- Das Muster wird nicht sofort ausgewertet
+```
+
+## Vorlagen und Muster fuer regulaere Ausdruecke
+Verwenden von regulaeren Ausdruecken zur Erkennung von Zeichenfolgenmustern.
+
+Regex in Python:
+```javascript
+import re
+pattern = re.compile(r'\d+')
+match = pattern.match('123')
+```
+
+## Zusammenfassung
+Pattern Matching bietet eine maechtige und ausdrucksstarke Moeglichkeit, Datenstrukturen zu verarbeiten und zu analysieren. Es umfasst verschiedene Techniken und Ansaetze, die von einfachen Literal- und Variablenmustern bis hin zu komplexen rekursiven Strukturen und regulaeren Ausdruecken reichen. Das Verstaendnis dieser Unteraspekte ist entscheidend, um die vollen Vorteile des Pattern Matching in der Programmierung auszuschoepfen.

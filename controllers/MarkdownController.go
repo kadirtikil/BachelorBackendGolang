@@ -3,7 +3,6 @@ package controllers
 import (
 	"bufio"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"os"
 	"strings"
@@ -36,8 +35,6 @@ func GetTxtAsString(filepath string) (string, error) {
 	if err := scanner.Err(); err != nil {
 		return "", err
 	}
-
-	fmt.Println(lines)
 
 	// return the string
 	return strings.Join(lines, "\n"), nil
@@ -94,12 +91,11 @@ func getKeyValue(key string) (string, bool) {
 
 /******************************************************************************************************************************************************/
 //////////////////////////////////////////////////////////////////////////////////////////
-func HomePageHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome to the Home Page!")
-}
 
-func AboutPageHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "This is the About Page!")
+// Struct for response format
+
+type Message struct {
+	Message string `json:"message"`
 }
 
 func GetMarkdown(w http.ResponseWriter, r *http.Request) {
@@ -117,8 +113,21 @@ func GetMarkdown(w http.ResponseWriter, r *http.Request) {
 		if err2 != nil {
 			http.Error(w, "Could'nt read file!", http.StatusInternalServerError)
 		}
+		// trying to return it as json here
+		msg := Message{
+			Message: content,
+		}
 
-		fmt.Fprintf(w, content)
+		jsonResponseData, err := json.Marshal(msg)
+
+		if err != nil {
+			http.Error(w, "here", http.StatusInternalServerError)
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+
+		w.Write(jsonResponseData)
 
 	} else {
 		http.Error(w, "Could'nt read file!", http.StatusInternalServerError)
