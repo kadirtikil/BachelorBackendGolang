@@ -12,7 +12,7 @@ func main() {
 
 	mux.HandleFunc("/svg/{filename}", controllers.GetSvg)
 
-	mux.HandleFunc("/editmarkdown", controllers.UpdateMarkdownData)
+	mux.HandleFunc("/editmarkdown", controllers.UpdateMarkdown)
 
 	mux.HandleFunc("/fetchmarkdown/{record}", controllers.GetMarkdownFromDB)
 
