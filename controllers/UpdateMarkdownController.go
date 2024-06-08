@@ -48,19 +48,21 @@ func UpdateMarkdown(w http.ResponseWriter, r *http.Request) {
 	// OOOOKAAAY now i got the data and can query the DB!
 	// fmt.Println(moe.Chifre1)
 
-	// all the data needet is here. now its time to update the entry in the db
-	// query the data from the table
-	query := "UPDATE markdown SET markdown = ? WHERE title = ?"
-
 	// this is where the chifre check will take place...
-	if true {
+	if moe.Chifre1 == "Hello" && moe.Chifre2 == "World" {
+		fmt.Println("Password is correct!!!")
+		// all the data needet is here. now its time to update the entry in the db
+		// query the data from the table
+		query := "UPDATE markdown SET markdown = ? WHERE title = ?"
 		res, err := db.Exec(query, moe.MarkdownText, moe.Headline)
 
 		if err != nil {
 			fmt.Print(err)
 		}
 
-		fmt.Println(res)
+		fmt.Println("Row has been updated", res)
+	} else {
+		http.Error(w, "sowwy", http.StatusInternalServerError)
 	}
 
 	// Respond with the message
