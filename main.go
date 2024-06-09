@@ -10,7 +10,7 @@ import (
 func main() {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/svg/{filename}", controllers.GetSvg)
+	mux.HandleFunc("/svg/{svg}", controllers.GetSvgFromDB)
 
 	mux.HandleFunc("/editmarkdown", controllers.UpdateMarkdown)
 

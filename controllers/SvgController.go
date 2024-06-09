@@ -1,90 +1,64 @@
 package controllers
 
 import (
-	"bufio"
 	"encoding/json"
+	"fmt"
 	"net/http"
-	"os"
 	"strings"
 )
 
 // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Functions for svgs
 // get the svg from directory
-func GetSvgAsString(filepath string) ([]byte, error) {
-	file, err := os.ReadFile(filepath)
-	if err != nil {
-		return []byte{}, err
-	}
 
-	return file, nil
+// struct to make svg object out of query return value:
+type SvgObject struct {
+	id      int
+	title   string
+	svgText string
 }
 
-var svgElements map[string]string
-
-func getWhitelistedSVGElements() (map[string]string, error) {
-	file, err := os.Open("assets\\PossibleSVG.json")
-
-	if err != nil {
-		return map[string]string{}, nil
-	}
-
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	var lines []byte
-
-	for scanner.Scan() {
-		lines = append(lines, scanner.Bytes()...)
-	}
-
-	if err := scanner.Err(); err != nil {
-		return map[string]string{}, err
-	}
-
-	if err := json.Unmarshal(lines, &svgElements); err != nil {
-		return map[string]string{}, err
-	}
-
-	return svgElements, nil
-}
-
-func getKeyValueSvg(file string) (string, bool) {
-	getWhitelistedSVGElements()
-	value, ok := svgElements[file]
-	return value, ok
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-func GetSvg(w http.ResponseWriter, r *http.Request) {
-
+func GetSvgFromDB(w http.ResponseWriter, r *http.Request) {
+	// get the filename from the route
 	parts := strings.Split(r.URL.Path, "/")
-	filename := parts[len(parts)-1]
+	svg := parts[len(parts)-1]
 
-	value, ok := getKeyValueSvg(filename)
+	fmt.Println(svg)
 
-	if ok {
-		svgFile, err := GetSvgAsString("assets\\svgs\\" + value + ".svg")
-		if err != nil {
-			http.Error(w, "what", http.StatusInternalServerError)
-		}
+	// call it just in case it hasnt been called in any other controller but actually i dont need to since
+	// every interaction with the backend start with fetching the backend anyway.
+	// which makes the application vulnerable. if someone manages to mim the connection, and would call this function, knowing the database connection hasnt been set up
+	// this person could make the server crash.... Need to add some serious error handling.
+	initDatabase()
 
-		msg := Message{
-			Message: string(svgFile),
-		}
+	// Create the object to save fetched data
+	var svgObj SvgObject
 
-		jsonSvgPayload, err := json.Marshal(msg)
+	// The query to fetch the row identified by title, limitted to 1
+	query := "SELECT * FROM bachelordatabase.svg WHERE title = ? LIMIT 1;"
 
-		if err != nil {
-			http.Error(w, "what", http.StatusInternalServerError)
-		}
+	// exec the query check for err, safe data through scan and reference to svgObj above.
+	err := db.QueryRow(query, svg).Scan(&svgObj.id, &svgObj.title, &svgObj.svgText)
 
-		w.Header().Set("Content-Type", "application/json")
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Write(jsonSvgPayload)
-	} else {
-		http.Error(w, "no bonita im sowwy", http.StatusInternalServerError)
+	if err != nil {
+		fmt.Println(err)
 	}
+
+	// Prepare return value
+	msg := Message{
+		Message: svgObj.svgText,
+	}
+
+	// jsonify the msg object to send it back
+	jsonData, err2 := json.Marshal(msg)
+
+	if err2 != nil {
+		fmt.Println(err2)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	w.Write(jsonData)
 
 }

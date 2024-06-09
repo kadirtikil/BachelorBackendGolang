@@ -33,7 +33,7 @@ func GetMarkdownFromDB(w http.ResponseWriter, r *http.Request) {
 	var mrkdn Markdown
 
 	// query the data from the table
-	query := "SELECT * FROM markdown WHERE title = ? LIMIT 1"
+	query := "SELECT * FROM markdown WHERE title = ? LIMIT 1;" // this semicolon could prevent so many attacks lol.
 	err := db.QueryRow(query, record).Scan(&mrkdn.id, &mrkdn.title, &mrkdn.markdown)
 
 	if err != nil {
