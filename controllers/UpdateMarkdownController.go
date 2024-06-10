@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 type MarkdownEditObject struct {
 	// remember ALWAYS BEGIN WITH UPPERCASE!!!!!!
 	Headline     string `json:"headline"`
@@ -70,4 +71,63 @@ func UpdateMarkdown(w http.ResponseWriter, r *http.Request) {
 	// Optionally, you can send a response back to the client
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Message received successfully"))
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Define struct for request
+type CheckAuthObject struct {
+	Chiffre1 string `json:"chiffre1"`
+	Chiffre2 string `json:"chiffre2"`
+}
+
+// Define the struct for the response
+type AuthResponse struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+}
+
+func CheckAuth(w http.ResponseWriter, r *http.Request) {
+	// Handle preflight requests
+	if r.Method == http.MethodOptions {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	content, err := io.ReadAll(r.Body)
+	defer r.Body.Close()
+
+	fmt.Println(string(content))
+
+	if err != nil {
+		fmt.Println("something wrong trying to read the request")
+		http.Error(w, "No Auth possible at this time. Contact DEV if issue persists.", http.StatusInternalServerError)
+		return
+	}
+
+	// at this point, content is byte data from the request body, so creds reach the backend.
+	var cao CheckAuthObject
+	err2 := json.Unmarshal(content, &cao)
+
+	if err2 != nil {
+		fmt.Println("something wrong trying to unmarshal the JSON at CheckAuth func")
+		http.Error(w, "No Auth possible at this time. Contact DEV if issue persists.", http.StatusInternalServerError)
+		return
+	}
+
+	// chiffres are reaching the backend now. time to check them.
+	if cao.Chiffre1 == "Hello" && cao.Chiffre2 == "World" {
+		fmt.Println("all good in the hood")
+		json.NewEncoder(w).Encode(AuthResponse{Success: true, Message: "All good"})
+	} else {
+		json.NewEncoder(w).Encode(AuthResponse{Success: false, Message: "no bueno"})
+	}
+
+	fmt.Println(cao)
 }
