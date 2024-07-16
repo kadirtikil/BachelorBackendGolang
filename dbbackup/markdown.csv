@@ -1,0 +1,829 @@
+"id";"title";"markdown"
+1;"Pure Functions";"**Pure Functions** sind Funktionen, ohne Seiteneffekte. D.h., dass bei einem immer gleichen Input, ein immer gleicher Output folgt. 
+
+Um dies zu gewährleisten, muss sichergestellt werden, dass eine Funktion nach ihrer Deklaration - *immutable* - d.h. *unveränderbar* ist.
+
+Dazu eine paar **Beispiele**.
+
+
+## Impure Functions
+
+```javascript
+		public class AddToNum {
+			private int num;
+
+		public void add(int add) {
+			this.num += add;
+		}
+
+		public int getNum() {
+			return this.num;
+		}
+
+		public static void main(String args[]){
+		// Ab hier sollte sich der interne Wert von atm nicht mehr ändern dürfen
+			AddToNum atm = new AddToNum(3); 
+			// Nach Anwendung von getNum(), antwortet diese mit ""3"".
+			System.out.println(atm.getNum());
+		
+			// Aber nun geschieht es. Der interne Zustand eines bereits deklariertem 
+			// Werts wird modifiziert
+			atm.add(2);
+		
+			// Nach Anwendung von getNum(), antwortet diese mit ""5"".
+			// Das ist no bueno, da sich der interne Zustand von ""3"" auf ""5"" geändert hat.
+			// Somit würde getNum() nun einen anderen Wert zurückgeben.
+			System.out.println(atm.getNum()); 
+		}
+	} 
+```
+
+## Pure Functions
+
+```javascript
+	public class AddToNum {
+		private int num;
+
+		public int add(int add) {
+			return this.num + add;
+		}
+
+		public int getNum() {
+			return this.num;
+		}
+
+		public static void main(String args[]){
+			// Ab hier sollte sich der interne Wert von atm nicht mehr ändern dürfen
+			AddToNum atm = new AddToNum(3); 
+			// Nach Anwendung von getNum(), antwortet diese mit ""3"".
+			System.out.println(atm.getNum());
+		
+			// Aber nun geschieht es. Der interne Zustand eines bereits deklarierten Werts wird 
+			// modifiziert
+			atm.add(2);
+			// Nach Anwendung von getNum(), antwortet diese wieder mit ""3"". Das ist sehr bueno.
+			// Diesesmal hat add() nämlich den internen Zustand von atm nicht verändert.
+			// Der interne Zustand von atm ist nun nach Ihrer deklaration nicht mehr veränderbar.
+			System.out.println(atm.getNum()); 
+		}
+	} 
+```
+
+
+"
+2;"TEST";"TESTTESTTEST"
+3;"Wartbar-, Erweiterbar- und Testbarkeit";"Die Erweiterbarkeit, Wartbarkeit und Testbarkeit spielen in der Funktionalen-Programmierung eine wichtige Rolle.
+Durch die geringe granularität des Codes ist es möglich, diesen besser und schneller nachzuvollziehen.
+Desweiteren ist dadurch ein einfaches testen des Codes möglich.
+
+Im folgenden ist ein Beispiel, welches imperativ und danach funktional programmiert wurde.
+
+**Imperativ** 
+```javascript
+// Imperativer Ansatz
+function processNumbersImperative(numbers) {
+    let result = [];
+    for (let i = 0; i < numbers.length; i++) {
+    if (numbers[i] % 2 !== 0) { // Check ob Zahl ungerade ist
+        result.push(numbers[i] * numbers[i]); // Quadriere die Zahl
+    }
+    }
+    return result;
+}
+
+// Output
+const numbers = [1, 2, 3, 4, 5];
+console.log(processNumbersImperative(numbers)); // => [1, 9, 25]
+
+
+```
+
+**Funktional** 
+
+```javascript
+// Funktionaler Ansatz
+function processNumbersFunctional(numbers) {
+  return numbers
+    .filter(n => n % 2 !== 0) // Filtere die gerade Zahlen
+    .map(n => n * n);         // Quadriere die übrigen Zahlen
+}
+
+// Output
+const numbers = [1, 2, 3, 4, 5];
+console.log(processNumbersFunctional(numbers)); // => [1, 9, 25]
+
+
+```
+"
+4;"Currying";"Currying ist eine Technik in der funktionalen Programmierung, bei der eine Funktion, die mehrere Argumente benoetigt, in eine Kette von Funktionen umgewandelt wird, von denen jede nur ein einziges Argument benoetigt. Dies ermoeglicht es, Funktionen teilweise zu applizieren, das heisst, sie mit einigen ihrer Argumente vorab zu belegen, um neue Funktionen zu erstellen.
+
+Hier ist ein Beispiel auf JavaScript, um das Konzept des Currying zu veranschaulichen:
+
+```javascript
+// Normale Funktion, die zwei Argumente annimmt
+function add(a, b) {
+  return a + b;
+}
+
+// Curry-Version der add-Funktion
+function curryAdd(a) {
+  return function(b) {
+    return add(a, b);
+  };
+}
+
+// Verwenden der Curry-Funktion
+const add5 = curryAdd(5);
+console.log(add5(3)); // Ausgabe: 8
+console.log(add5(10)); // Ausgabe: 15
+
+```
+Currying ist ein maechtiges Konzept in der funktionalen Programmierung, das es ermoeglicht, Funktionen schrittweise zu applizieren. Dies foerdert die Wiederverwendbarkeit und Flexibilitaet von Code. Das obige Beispiel zeigt, wie man Currying in JavaScript implementieren und verwenden kann."
+5;"Persistente Datenstrukturen";"Datenstrukturen, die nach ihrer Initialisierung nicht mehr veraenderbar sind, nennt man persistent.
+
+Das bedeutet, dass kein Prozess die Daten manipulieren darf oder kann.
+
+Dieses Konzept - wie in der Unveraenderlichkeit (Immutability) erklaert - ist massgebend fuer Nebenlaeufigkeit, paralleles Rechnen sowie die Vorhersagbarkeit und Nachvollziehbarkeit des Codes. (Siehe Pure Functions)"
+6;"Concurrency";"Nebenläufige Programmierung ermöglicht es, mehrere Prozesse Parallel auf demselben Datensatz arbeiten zu lassen.
+Vorteile des Nebenläufigen-Programmierens sind bessere Leistung, Skallierbarkeit und Fehlertoleranz.
+
+Im Kontext meiner Arbeit stellt sich hier jedoch nicht die Frage wie es funktioniert, sondern wo die
+Funktionale-Programmierung im Kontext der Nebenläufigkeit eine Rolle spielt.
+        
+**Funktionaler Aspekt**
+- Immutability: Die Prozesse dürfen nichts an den Daten ändern, da andere Prozesse auch mit diesen Daten arbeiten, und diese nicht manipuliert sein sollten.
+
+- Pure Functions: Die Prozesse müssen immer dasselbe Ergebnis liefern ((Dazu am besten eine Darstellung mit Mengen))
+
+- Deklarative Programmierung: Funktionen sind in ihrer Deklaration nachvollziehbar.
+        
+Um nun die **Nebenläufigkeit** interaktiv zu veranschaulichen, ist im folgenden eine Anwendung, die *Tasks* entgegen nimmt
+und diese dann - abhängig von dessen Dauer - nach dem Shortest-Job-First Prinzip organisiert.
+
+Für mehr Informationen zum Algorithmus, siehe Lastenheft auf GitHub.    
+
+
+## Geringe Latenz
+Geringe Latenz steht für die Fähigkeit eines Systems, Anfragen in möglichst kurzer Zeit zu beantworten.
+durch die Nebenläufigkeit können Systeme mehrere Anfragen gleichzeitig abarbeiten und somit schneller Antworten liefern.
+
+Echtzeit Chatsysteme bestehen aus nebenläufigen Prozessen, um Nachrichten zu verarbeiten und an verschiedene Nutzer zu verschicken.
+
+"
+7;"Higher Order Functions";"**Higher Order Functions** sind Funktionen, die entweder eine oder mehrere Funktion/en als Argument entgegen nehmen und/oder eine Funktion zurückgeben.
+
+Nicht weit weg von **HOF** befinden sich die **First Class Functions**. 
+In **First Class Functions** ist es möglich:
+1.  Funktionen an Variablen zuzuweisen.
+2.  Funktionen als Argumente an andere Funktionen weiterzugeben.
+3.  Funktionen als Rückgabewert von Funktionen zu erhalten.
+
+### Beispiel für eine First Class Function
+```javascript
+	// Die Zuweisung einer Funktion an eine Variable:
+	// Funktion wird bei Aufruf der Variable ausgeführt.
+	const foo = () => { console.log(""Hello World!""); }
+
+	// Die Übergabe einer Funktion, an eine weiter Funktion, als Argument.
+	function printHello() {
+		return ""Hello "";
+	}
+
+	function printWorld(messageFunc, name) {
+		console.log(messageFunc() + name + ""!"");
+	}
+
+	=> printWorld(printHello, ""World""); // Prints ""Hello World!""
+
+	
+	// Funktionen als Rückgabewert. Siehe Higher Order Functions.
+
+```
+
+### Beispiel für eine Higher Order Function
+```javascript
+	// Higher-order function mit entsprechendem Rückgabewert basierend auf dem Operator  
+	function  operationFactory(operator) { 
+	// Rückgabe einer Funktion die 2 Werte nimmt und die Operation des operanden ausführt.  
+		switch (operator) { 
+			case  '+': 
+				return  function  add(a, b) { 
+					return a + b; 
+				}; 
+			case  '-':
+				return  function  subtract(a, b) { 
+					return a - b; 
+				}; 
+			case  '*': 
+				return  function  multiply(a, b) { 
+					return a * b; 
+				}; 
+			case  '/': 
+				return  function  divide(a, b) { 
+					return a / b; 
+				}; 
+			default: 
+			throw  new  Error('Invalid operator: ' + operator); 
+			} 
+	} 
+  
+	// Operanden werden mit der operationFactory erstellt.
+	const add = operationFactory('+'); 
+	const subtract = operationFactory('-'); 
+	const multiply = operationFactory('*'); 
+	const divide = operationFactory('/'); 
+
+	// Ergebnis  
+	console.log(add(5, 3)); // Output: 8  
+	console.log(subtract(10, 4)); // Output: 6  
+	console.log(multiply(2, 6)); // Output: 12  
+	console.log(divide(20, 5)); // Output: 4
+```
+
+## Was ist der Vorteil von HOF?
+
+1. Abstraktion: 
+HOF erlauben es, Rechenmuster zu abstrahieren um diese folglich verständlicher zu machen. 
+Das beste Beispiel hierfür wäre map() (Siehe Datenintensiv).
+
+2. Wiederverwendbar:
+Durch die Nutzung von HOF, kann man allgemeinen und wiederverwendbaren Code schreiben. 
+Die .filter()-Funktion kann man mit beliebigen Prädikatsfunktionen verwenden. 
+
+3. Aufbau:
+HOF sind durch die Kombination von mehreren simpleren/puren Funktionen einfacher nachzuvollziehen. 
+Des Weiteren erleichtert dies auch die Wartung der Codebasis bis zum Testen des Codes.
+
+4. Immutability und Pure Functions: 
+HOF sicherer durch die Nutzung von Immutability und Pure Functions. Dadurch ist das Verhalten des Programms
+vorhersagbarer. Außerdem ist dadurch das Debugging einfacher.
+
+5. Deklarativer Stil:
+Durch den deklarativen Stil in HOF ist der Code aussagekräftiger darin, was es machen sollen.
+Anstatt eine Reihe von Befehlen zu beinhalten, kann durch die Verwendung von richtig benannten und 
+simplen/puren Funktionen, die Funktionalität des Programms um einiges einfach nachvollzogen werden.
+"
+8;"Lazy Evaluation";"Lazy Evaluation ist ein Konzept, das in funktionalen Programmiersprachen weit verbreitet ist. Bei der träge Auswertung werden Ausdrücke nicht sofort ausgewertet, sondern erst dann, wenn ihr Wert tatsächlich benötigt wird. Dies ermöglicht eine effiziente Verwendung von Ressourcen und kann die Leistung verbessern, insbesondere wenn es um die Verarbeitung großer oder unendlicher Datenmengen geht.
+
+### Wie funktioniert Lazy Evaluation?
+
+Bei der Lazy Evaluation werden Ausdrücke in Form von sogenannten ""Thunks"" oder ""Versprechungen"" (Promises) repräsentiert. Diese enthalten den Code zur Auswertung des Ausdrucks und werden erst dann evaluiert, wenn ihr Wert benötigt wird. Dadurch werden unnötige Berechnungen vermieden und Ressourcen effizient genutzt.
+
+In Scala wird dazu das **lazy** Schlüsselwort verwendet. Diese wird dann **erst** an ihrem Aufruf ausgewertet.
+Danach wird die Auswertung gecacht, also Zwischengespeichert, sodass sie bei ihrem nächsten Aufruf sofort
+abgerufen werden kann.
+
+### Beispiel:
+
+```javascript
+object LazyEvaluationExample {
+  def main(args: Array[String]): Unit = {
+    lazy val expensiveComputation = {
+      println(""Eine große Auswertung geschieht gerade..."")
+      52
+    }
+
+    println(""Vor dem Aufruf der lazy val..."")
+    println(s""Das Ergebnis ist: $expensiveComputation"") //  52, hier wird dieser berechnet und gecached.
+    println(""After accessing the lazy val"")
+    println(s""Accessing the lazy val again: $expensiveComputation"") // hier wird der gecachede Wert abgerufen.
+  }
+}
+
+```
+
+
+*Lazy Evaluation* ist jedoch nicht zu verwechseln mit async/await oder Promises in JavaScript!
+
+Async/await und Promises in Javascript existieren aus synchronisation Zwecken und nicht undbedingt um 
+Ressourcer effizient zu nutzen. Dies liegt daran, dass nicht jeder Server einem Client auf Anhieb antworten kann.
+
+Zweck in der *Lazy Evaluation* ist es, potentiell/theoretisch über unendlich große Datenstrukturen zu arbeiten.
+
+"
+9;"Rekursion";"## Was ist Rekursion?
+
+Rekursion ist das sich selbst aufrufen einer Funktion, bis eine Bedingung eintrifft. 
+So kann man ohne weitere variablen eine ganze Struktur iterieren. 
+Dadurch sind dann Errors - wie OutOfBoundExceptions - nicht mehr moeglich, da keine natuerliche Zahl genutzt wird
+als indikator fuer Grenzwerte einer Struktur.
+
+Stattdessen fragt sich die Funktion selbst, bei jedem Aufruf, ob dieser Index aktuell existiert. 
+
+Existiert dieser nicht, so wird der Wert zurueckgegeben.
+
+### Beispiel in Scala
+```javascript
+	def sum(array: Array[int]): Int = {
+		if(array.isEmpty) 0
+		else arr.head + sum(arr.tail)
+	}
+```
+
+Des Weiteren gibt es noch die *Tail Recursion*.
+
+### Was ist Tail Recursion?
+
+Tail Recursion ist eine Rekursive Funktion, dessen letzer Aufruf der rekursive - also der eigene - Aufruf ist.
+Dadurch ist es einfach fuer den Compiler die Rekursion zu optimieren, weil dieser den letzten Stackframe hierzu
+nutzen kann.
+
+Des Weiteren kann durch Tail Recuriosn eine Stackoverflow vermieden werden. Da der Rekursive-Aufruf der letzte ist
+arbeitet das Programm in einem konstanten Speicherbereich.
+
+```javascript
+	def sumTR(array: Array[int]): Int = {
+		def sumTRHelper(array: Array[int], index: int, acc: Int ){
+			if(index > array.length) acc
+			else sumTRHelper(array, index + 1, acc + array(index))
+		}
+		sumTRHelper(array, 0, 0)
+	}
+```
+
+Dadurch ist Tail Recursion erstens effizienter, und zweitens Sicherer als regulaere Rekursion.
+
+"
+10;"WhatsApp";"Das Backend von WhatsApp ist mit Erlang aufgebaut. Erlang kann durch das Message Passing Fehlertoleranz, Nebenläufigkeit und bessere Performance bieten. Für eine Real-Time-Chat-App daher perfekt.
+
+## Wie funktioniert das Message Passing in Erlang?
+
+### Nebenläufigkeit
+Erlang kann durch seine leichten Prozesse, welche vom Erlang Runtime gesteuert werden, statt vom Betriebssystem.
+
+Dadurch kann Erlang die große Menge an Prozessen besser nebenläufig verwalten.
+
+
+
+#### Prozesse in der Nebenläufigkeit
+
+In Erlang ist jeder Prozess eine eigene Einheit mit ihrem eigenen Speicher, sodass kein geteilter Speicher zwischen Prozessen existiert. 
+Da diese Prozesse leicht sind, kann das System diese in Millionen verwalten.
+
+#### Beispiel:
+```javascript
+% Spawn multiple processes to perform concurrent tasks
+spawn(fun() -> perform_task(1) end),
+spawn(fun() -> perform_task(2) end),
+spawn(fun() -> perform_task(3) end).
+
+perform_task(TaskNumber) ->
+    io:format(""Performing task ~p~n"", [TaskNumber]),
+    %% Simulate a task by sleeping for a random duration
+    timer:sleep(random:uniform(1000)),
+    io:format(""Task ~p completed~n"", [TaskNumber]).
+
+```
+
+## Message Passing
+Prozesse in Erlang kommunizieren durch Message Passing. Dieser Ansatz vermeidet geteilten Speicher, was Nebenläufigkeit fördert und race conditions vermeidet.
+
+#### Beispiel:
+```javascript
+% Define a process that receives messages
+Pid = spawn(fun() -> message_loop() end).
+
+% Send a message to the process
+Pid ! {hello, ""world""}.
+
+message_loop() ->
+    receive
+        {hello, Msg} -> io:format(""Received message: ~s~n"", [Msg]),
+                         message_loop()
+    end.
+
+```
+
+In diesem Beispiel wird ein Prozess erstellt, um Nachrichten zu behandeln. Der 'receive' Block wartet auf eine Nachricht und verarbeitet diese, wenn sie ankommt.
+
+## Fehlertoleranz
+Die Philosophie ""let it crash"" spielt hier eine große Rolle. Es wird erwartet, dass Prozesse fehlerhaft sind und vom Supervisor wieder gestartet werden. Dieser Ansatz verbessert das Error-Handling und macht das System robuster.
+
+#### Beispiel:
+```javascript
+% Worker process that may crash
+-module(worker).
+-export([start/0, loop/0]).
+
+start() ->
+    spawn(fun loop/0).
+
+loop() ->
+    receive
+        {crash, Reason} -> exit(Reason);
+        {message, Msg} -> io:format(""Message: ~s~n"", [Msg]),
+                          loop()
+    end.
+
+% Supervisor process that restarts the worker
+-module(supervisor).
+-export([start/0, supervise/1]).
+
+start() ->
+    spawn(fun supervise/1, [worker:start()]).
+
+supervise(WorkerPid) ->
+    monitor(process, WorkerPid),
+    receive
+        {'DOWN', _Ref, process, _Pid, _Reason} ->
+            io:format(""Worker crashed, restarting...~n""),
+            supervise(worker:start())
+    end.
+
+```
+# TEST"
+11;"Arten des Pattern-Matchings";"Pattern Matching ist eine Technik in der Informatik und Programmierung, die es ermoeglicht, Strukturen innerhalb von Daten zu erkennen und darauf basierend Operationen durchzufuehren. 
+Diese Technik wird in vielen Programmiersprachen und Paradigmen verwendet, insbesondere in funktionalen und logikbasierten Sprachen. 
+Pattern Matching hat mehrere Unteraspekte, die jeweils unterschiedliche Aspekte der Datenverarbeitung und -analyse abdecken. 
+Hier sind einige der wichtigsten Unteraspekte des Pattern Matching:
+
+## Syntaxbasiertes Pattern Matching
+Dies bezieht sich auf die Art und Weise, wie Muster in der Syntax einer Sprache definiert und erkannt werden.
+
+### Literal Patterns: Erkennen von konkreten Werten.
+```javascript
+case x of
+  1 -> ""one""
+  2 -> ""two""
+```
+
+### Variable Patterns: Binden von Werten an Variablen.
+```javascript
+case x of
+  y -> y + 1  -- y kann jeder Wert sein
+```
+
+### Wildcard Patterns: Ignorieren von bestimmten Werten.
+```javascript
+case x of
+  _ -> ""any value""  -- Das Unterstrichmuster ignoriert den tatsaechlichen Wert von x
+```
+
+## Struktur- und Typbasierte Pattern Matching
+Hierbei werden komplexere Strukturen und Typen wie Listen, Tupel und benutzerdefinierte Datentypen gematcht.
+
+Tupel Patterns: Muster, die auf Tupel-Strukturen angewendet werden.
+
+```javascript
+case x of
+  (a, b) -> a + b  -- Muster fuer ein Tupel mit zwei Elementen
+```
+Listen Patterns: Erkennung von Listenstrukturen.
+
+```javascript
+case x of
+  [] -> ""empty list""
+  (y:ys) -> ""head is "" ++ show y  -- Muster fuer eine Liste mit Kopf und Schwanz
+```
+
+
+Benutzerdefinierte Datentypen: Muster fuer benutzerdefinierte Typen oder Algebraische Datentypen.
+
+
+```javascript
+data Maybe a = Nothing | Just a
+case x of
+  Nothing -> ""nothing""
+  Just value -> ""just "" ++ show value
+```
+
+## Rekursives Pattern Matching
+Die Faehigkeit, rekursive Datenstrukturen wie Baeume oder Listen zu durchsuchen.
+
+Rekursive Listen: Erkennen und Verarbeiten rekursiver Strukturen.
+
+```javascript
+sumList :: [Int] -> Int
+sumList [] = 0
+sumList (x:xs) = x + sumList xs
+```
+
+Rekursive Baeume: Verarbeiten von Baumstrukturen durch Rekursion.
+
+```javascript
+Code kopieren
+data Tree a = Leaf a | Node (Tree a) (Tree a)
+depth :: Tree a -> Int
+depth (Leaf _) = 1
+depth (Node left right) = 1 + max (depth left) (depth right)
+```
+
+## Guarded Patterns
+Erlauben zusaetzliche Bedingungen (Guards) in Pattern Matching, die ueber die reine Struktur hinausgehen.
+
+Guards: Zusaetzliche logische Bedingungen innerhalb eines Musters.
+```javascript
+Code kopieren
+case x of
+  y | y > 0 -> ""positive""
+    | y == 0 -> ""zero""
+    | otherwise -> ""negative""
+```
+
+## Pattern Matching mit Backtracking
+Ein komplexerer Ansatz, bei dem das System verschiedene Muster ausprobiert und zurueckkehrt, wenn ein Muster nicht passt. Dies ist typisch fuer logikbasierte Sprachen wie Prolog.
+
+Backtracking in Prolog:
+```javascript
+member(X, [X|_]).
+member(X, [_|Tail]) :- member(X, Tail).
+```
+
+## Pattern Matching und Destrukturierung
+Ermoeglicht die direkte Extraktion von Komponenten aus Datenstrukturen.
+
+Destrukturierung in JavaScript:
+
+```javascript
+const [a, b] = [1, 2];  // a wird 1 und b wird 2
+```
+Destrukturierung in Python:
+
+```javascript
+Code kopieren
+a, b = (1, 2)  # a wird 1 und b wird 2
+```
+
+## Lazy Pattern Matching
+Ein Ansatz in Sprachen mit lazy evaluation, bei dem Muster nur bei Bedarf ausgewertet werden.
+
+Lazy Patterns in Haskell:
+```javascript
+f ~(x, y) = 1  -- Das Muster wird nicht sofort ausgewertet
+```
+
+## Vorlagen und Muster fuer regulaere Ausdruecke
+Verwenden von regulaeren Ausdruecken zur Erkennung von Zeichenfolgenmustern.
+
+Regex in Python:
+```javascript
+import re
+pattern = re.compile(r'd+')
+match = pattern.match('123')
+```
+
+## Zusammenfassung
+Pattern Matching bietet eine maechtige und ausdrucksstarke Moeglichkeit, Datenstrukturen zu verarbeiten und zu analysieren. Es umfasst verschiedene Techniken und Ansaetze, die von einfachen Literal- und Variablenmustern bis hin zu komplexen rekursiven Strukturen und regulaeren Ausdruecken reichen. Das Verstaendnis dieser Unteraspekte ist entscheidend, um die vollen Vorteile des Pattern Matching in der Programmierung auszuschoepfen."
+12;"Verteiltes Rechnen";"
+Verteiltes Rechnen bezieht sich auf Systeme, die eine Berechnung auf mehrere, separate und miteinander verbundene Rechner verteilt und ausführt. Diese Rechner teilen sich somit den Prozess untereinander auf. Gründe für die Verteilung eines Prozesses sind:
+
+-   **Bessere Skalierbarkeit**: Durch die Verteilung der Arbeitslast auf mehrere Rechner kann die Gesamtleistung eines Systems nahezu linear skaliert werden.
+-   **Höhere Verfügbarkeit**: Verteilte Systeme sind weniger anfällig für Ausfälle, da der Ausfall eines einzelnen Rechners nicht das gesamte System beeinträchtigt.
+-   **Fehlertoleranz**: Daten und Prozesse werden redundant verteilt, um Ausfälle abzufangen und die Zuverlässigkeit zu erhöhen.
+-   **Parallelverarbeitung**: Aufgaben können parallel bearbeitet werden, was die Effizienz und Geschwindigkeit von Berechnungen erheblich steigert.
+
+## Funktionale Programmierung für verteiltes Rechnen
+
+Das verteilte Rechnen wird durch die Anwendung funktionaler Programmierkonzepte besonders effizient und zuverlässig. Wichtige Konzepte hierbei sind:
+
+-   **Unveränderlichkeit (Immutability)**: Durch die Unveränderbarkeit der Daten können mehrere Prozesse gleichzeitig auf denselben Datensatz zugreifen. Da diese Datenstrukturen sich nicht ändern, kann jeder Prozess davon ausgehen, dass er mit denselben Daten arbeitet wie die anderen Prozesse. Dies verhindert Dateninkonsistenzen und vereinfacht die Synchronisation.
+    
+-   **Reinheit der Funktionen (Pure Functions)**: Reine Funktionen erlauben keine Seiteneffekte und hängen nur von ihren Eingabewerten ab. Dies bedeutet, dass dieselbe Eingabe immer dasselbe Ergebnis liefert. Durch die Nutzung von reinen Funktionen ist es möglich, diese leicht zu parallelisieren. Egal auf welchem Rechner die Funktion arbeitet oder welcher Teil der Funktion ausgeführt wird, das Resultat bleibt dasselbe. Dies vereinfacht die Verteilung und Skalierung von Berechnungen.
+
+-   **Higher-Order-Functions**: Funktionen, die andere Funktionen als Argumente nehmen oder zurückgeben, fördern die Modularität und Wiederverwendbarkeit des Codes. Dies ist besonders nützlich in verteilten Systemen, in denen verschiedene Funktionen auf verschiedenen Knoten ausgeführt werden können.
+    
+-   **Lazy Evaluation**: Diese Technik verzögert die Berechnung bis zu dem Zeitpunkt, an dem das Ergebnis benötigt wird. Dies kann die Effizienz in verteilten Systemen verbessern, indem unnötige Berechnungen vermieden werden.
+    
+    
+
+Durch die Kombination dieser Konzepte können verteilte Systeme effizienter, sicherer und einfacher zu warten gemacht werden, was die Entwicklung skalierbarer und robuster Anwendungen unterstützt."
+13;"Datenintensiv";"## The Holy Trinity Of Functional-Programming, Map-Filter-Reduce 
+
+### **Map**
+
+Die map-Funktion wird verwendet, um eine Operation auf jedes Element einer Liste oder einer Datenstruktur 
+anzuwenden und eine neue Liste mit den Ergebnissen dieser Operation zu erstellen. 
+
+Es transformiert jedes Element nach den angegebenen Regeln, ohne die Originaldaten zu ändern. 
+
+
+*Beispiel:*
+
+Betone die wichtige Rolle von map bei der Transformation von Daten und der Erzeugung neuer Datenstrukturen.        
+        
+Wenn man nun einen Array an Werten hat, kann man diese Werte mit Map bearbeiten. Jedoch werden diese nicht geändert, 
+
+sondern die veränderte Form wird in das Ergebnis übernommen. => Immutability.
+
+```javascript
+    const values = [""  Potato "", "" Apple   "", "" Watermelon   ""];
+
+    const result = values.map((x) => x.trim());
+
+    => result = [""Potato"", ""Apple"", ""Watermelon""];
+```
+
+Hier werden zunächst alle Elemente im Array auf Blankspaces untersucht, die dann entfernt werden. 
+
+Man merke: Map geht über JEDES Element im Array. Kein Element wird übersprungen.
+
+Wo kommt hier die Funktionale-Programmierung ins Spiel?
+
+1. Pure Function & Immutability
+
+Map verändert die Daten nicht, sondern ließt sie aus, mutiert diese, und speichert sie im Ergebnis.
+Dadurch können keine Seiteneffekte auftreten, weil das Ergebnis ausschließlich vom Input der 
+unveränderlichen Daten abhängt.
+
+2. Higher-Order-Function:
+
+Map akzeptiert nur eine Funktion und gibt eine Funktion zurück. Desweiteren können je nach belieben individuele 
+Funktionen erstellt werden, da Map eine HOF ist, und somit auch Funktionen akzeptiert. Dies trägt auch zur Erweiterbarkeit
+der Funktion bei.
+
+3. Declarative-Programming:
+
+Es gibt keine Imperative-Anweisungen die sagen, was mit einem Element passieren soll. Stattdessen wird ein deklarativer Ansatz
+verwendet, der jedes Element auf die selbe Art bearbeitet.
+
+
+
+
+
+
+### **Filter**
+
+Die filter-Funktion wird verwendet, um Elemente aus einer Liste auszuwählen, die eine bestimmte Bedingung erfüllen, und eine neue Liste mit diesen Elementen zurückzugeben. 
+        
+Sie ermöglicht es, Daten nach bestimmten Kriterien zu filtern, ohne die Daten selbst zu ändern.
+        
+*Beispiel:*
+
+Beschreibe, wie filter verwendet werden kann, 
+        
+um nur die Elemente zu behalten, die bestimmte Eigenschaften haben oder bestimmte Bedingungen erfüllen
+        
+Die ***filter-Funktion*** nimmt eine Funktion, die eine bool'sche Funktion annimmt, sodass diese ein Element auswertet,
+und falls dieser zutrifft, übernimmt. Dadurch kann die Datenmenge auf die Menge der relevanten Daten reduziert werden.
+
+Um dies besser zu veranschaulichen, wird den Daten eine weitere Metrik gegeben.
+        
+```javascript
+    const values = [(""Potatoes"",""vegetarian""),(""Steak"",""carnivore""),(""Apple"",""vegetarian"")];
+
+    const vegies = values.filter((x) => x[1]===""vegetarian);
+
+    => vegies = [(""Potatoes"",""vegetarian""), (""Apple"",""vegetarian"")]
+        
+```
+
+
+
+### **Reduce**
+
+Die reduce-Funktion wird verwendet, um eine Liste von Werten auf einen einzigen Wert zu reduzieren, indem eine kumulative Operation auf die Elemente angewendet wird. 
+        
+Sie kann verwendet werden, um Summen zu berechnen, Werte zu aggregieren oder komplexe Operationen auf Listen durchzuführen. 
+        
+So wird am Ende nur ein Wert aus der Datenmenge gefolgert.
+        
+*Beispiel:*
+
+```javascript
+    const values = [1, 2, 3, 4];
+
+    const result = values.reduce((acc, curr) => acc + curr, initialVal);
+
+    => resulte = 10;
+```"
+14;"Immutability";"**Immutability** bedeutet, dass etwas sich nicht ändert, auch nicht über einen gegebenen Zeitraum hinaus.
+
+In der Funktionalen Programmierung bezieht sich dies auf die **Unveränderbarkeit** eines Datums nach ihrer Initialisierung. Dadurch sind Seiteneffekte nicht möglich. D.h. ein Wert kann sich während der Laufzeit nicht unerwartet ändern.
+
+Dieses Designkonzept der **Unveränderbarkeit** hat in vielen Konzepten einen immensen Nutzen.
+Zum Beispiel in:
+1. Sicherheit
+2. Nebenläufigkeit
+3. Persistente Datenstrukturen
+Dazu aber später mehr.
+
+## Nun stellen sich ein paar Fragen:
+### Warum bevorzugt die Funktionale Programmierung Immutability?
+Weil dadurch der Code viel einfacher nachzuvollziehen ist. 
+```javascript
+	function addItem(cart, item) {
+	  return {
+	    ...cart,
+	    items: [...cart.items, item],
+	    total: cart.total + item.price,
+	  };
+	}
+
+	const cart = { items: [], total: 0 };
+	const cartWithApple = addItem(cart, { name: 'Apple', price: 1 });
+	const cartWithAppleAndBanana = addItem(cartWithApple, { name: 'Banana', price: 2 });
+
+	console.log(cart); // { items: [], total: 0 }
+	console.log(cartWithApple); // { items: [ { name: 'Apple', price: 1 } ], total: 1 }
+	console.log(cartWithAppleAndBanana); // { items: [ { name: 'Apple', price: 1 }, 
+										 //{ name: 'Banana', price: 2 } ], total: 3 }
+
+``` 
+
+## Warum legt die Funktionale Programmierung einen so hohen Fokus auf die Veränderbarkeit von Daten?
+Hauptsächlich wegen besser strukturiertem Code. Jedoch spielt es noch eine Weitere Rolle in der Nebenläufigkeit. (Dazu aber später mehr.)
+"
+15;"Pattern Matching";"Pattern Matching ist ein leistungsstarkes Konzept in funktionalen Programmiersprachen, das verwendet wird, um Datenstrukturen zu dekonstruieren und auf ihre Bestandteile zu prüfen. Es ermöglicht eine elegante und deklarative Art, Daten zu manipulieren und auf sie zu reagieren.
+
+### Wie funktioniert Pattern Matching?
+
+Pattern Matching besteht aus dem Vergleich eines Wertes mit einer Menge von Mustern. Wenn der Wert mit einem der Muster übereinstimmt, wird der zugehörige Codeblock ausgeführt.    
+### Beispiel:
+
+```javascript
+object PatternMatchingExample {
+  def main(args: Array[String]): Unit = {
+    println(describe(5))
+    println(describe(""hello""))
+    println(describe(List(1, 2, 3)))
+    println(describe((1, ""apple"")))
+  }
+
+  def describe(x: Any): String = x match {
+    case 5 => ""Es ist die Zahl fünf.""
+    case ""hello"" => ""Es ist ein Begrüßungswort.""
+    case List(_, _, _) => ""Es ist eine Liste mit drei Elementen.""
+    case (1, something) => s""Es ist ein Tupel, das mit 1 beginnt und $something enthält.""
+    case _ => ""Es ist etwas anderes.""
+  }
+}
+
+```
+
+Unten ist ein Beispiel in Prolog.
+"
+16;"Funktionskomposition";"Funktionskomposition ist das aneinanderketten von Funktionen in einer spezifischen Reihenfolge, sodass ein Datum von ihrer urspruenglichen Form in eine neue Form transformiert wird.
+
+Dies ist einfach zu veranschaulichen mit einer Pipeline.
+Siehe unten bei *Pipeline*.
+
+Beispiel:
+Gegeben sind die Funktionen f, g und h. 
+Die Funktionen sind nicht assoziativ zueinander und muessen alphabetisch auf das Datum **x** ausgefuehrt werden.
+Das haette diese Reihenfolge zur folge:
+```javascript
+	h( g( f( x ) ) )
+```"
+17;"LiChess";"LiChess ist eine online Schachplattform, welche durch ihre funktionale programmierung in Scala auf viel aufmerksamkeit Seitens von Entwicklern gestoßen ist. 
+
+Im Rahmen dieses Projektes folgt eine Analyse an maßgebenden Stellen des Codes.
+
+###### Im Rahmen des Projekts wird nicht die funktionalität der Funktionen erklärt, sondern nur, dass es funktional programmiert wurde. Für einen tieferen Einblick siehe Bachelorarbeit.
+
+
+## Board.scala
+### Mit Bits Schach repräsentieren
+```javascript
+  def apply(l: Long): Bitboard                            = l
+  inline def apply(inline xs: Iterable[Square]): Bitboard = xs.foldLeft(empty)((b, s) => b | s.bl)
+
+  val empty: Bitboard = 0L
+  val all: Bitboard   = -1L
+  // E4, D4, E5, D5
+  val center = 0x1818000000L
+
+  val firstRank: Bitboard = 0xffL
+  val lastRank: Bitboard  = 0xffL << 56
+
+  // all light squares
+  val lightSquares: Bitboard = 0x55aa55aa55aa55aaL
+  // all dark squares
+  val darkSquares: Bitboard = 0xaa55aa55aa55aa55L
+```
+Siehe unten in der SVG.
+
+Funktionen für das Schachfeld.
+
+```javascript
+
+// Checks if a is equal to empty.
+// Pure function: No side effects, consistent output for the same input.
+def isEmpty: Boolean  = a == empty
+
+// Negates the result of isEmpty.
+// Pure function: No side effects, consistent output for the same input.
+def nonEmpty: Boolean = !isEmpty
+
+// Checks if the bit corresponding to the square is set in a.
+// Pure function: No side effects, consistent output for the same input.
+def contains(square: Square): Boolean =
+  (a & (1L << square.value)) != 0L
+
+// Returns a new Bitboard with the bit corresponding to the square set.
+// Pure function: No side effects, does not modify a, returns a new Bitboard.
+def add(square: Square): Bitboard    = a | square.bl
+
+// Returns a new Bitboard with the bit corresponding to the square cleared.
+// Pure function: No side effects, does not modify a, returns a new Bitboard.
+def remove(square: Square): Bitboard = a & ~square.bl
+
+// Returns a new Bitboard with the bit moved from one square to another.
+// Pure function: No side effects, does not modify a, returns a new Bitboard.
+def move(from: Square, to: Square): Bitboard =
+   a & ~from.bl | to.bl
+
+// Checks if more than one bit is set in a.
+// Pure function: No side effects, consistent output for the same input.
+def moreThanOne: Boolean =
+   (a & (a - 1L)) != 0L
+```"
